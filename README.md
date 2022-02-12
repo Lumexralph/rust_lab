@@ -1,2 +1,3 @@
 # rust_lab
-Finding my way back to Rust
+
+Writing snippets of Rust language to refresh my memory before I get my head into the big things again.
