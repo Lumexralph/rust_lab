@@ -108,4 +108,48 @@ pub fn display_functions_and_methods() {
     pair.destroy();
 }
 
+// HOF - High Order Functions
+// HOFs and lazy iterators give Rust its functional flavor
+fn is_odd(number: u32) -> bool {
+    number % 2 == 1
+}
 
+pub fn display_high_order_function() {
+    println!("Find the sum of all the squared odd numbers under 1000");
+    let upper = 1000;
+
+    // Imperative approach
+    // Declare accumulator variable
+    let mut acc = 0;
+    // Iterate: 0, 1, 2, ... to infinity
+    for number in 0.. {
+        let number_squared = number * number;
+
+        if number_squared >= upper {
+            // Break loop if exceeded the upper limit
+            break;
+        } else if is_odd(number_squared) {
+            // Accumulate value, if it's odd
+            acc += number_squared;
+        }
+    }
+    println!("imperative style: {}", acc);
+
+    // Below is the functional approach of the above accumulation operation.
+    let sum_of_squared_odd_numbers: u32 =
+        (0..).map(|number| number * number)    // square number
+            .take_while(|&squared_number| squared_number < upper) // Below upper limit
+            .filter(|&squared_number| is_odd(squared_number)) // get only odd numbers
+            .fold(0, |acc, squared_number| acc + squared_number); // sum them all
+
+    println!("functional style: {}", sum_of_squared_odd_numbers);
+}
+
+// Diverging Functions
+// Diverging functions never return. They are marked using !, which is an empty type.
+// function, which will never return the control back to the caller.
+// It is also the return type of functions that loop forever (e.g. loop {}) like network servers
+// or functions that terminate the process (e.g. exit()).
+fn foo() -> ! {
+    panic!("This call never returns.");
+}
