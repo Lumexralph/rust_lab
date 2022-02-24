@@ -107,3 +107,5 @@ pub fn display_functions_and_methods() {
     let pair = Pair(Box::new(3), Box::new(6));
     pair.destroy();
 }
+
+

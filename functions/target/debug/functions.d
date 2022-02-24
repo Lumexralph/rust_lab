@@ -1,0 +1,1 @@
+/Users/olumideogundele/Projects/rust/rust_lab/functions/target/debug/functions: /Users/olumideogundele/Projects/rust/rust_lab/functions/src/closures.rs /Users/olumideogundele/Projects/rust/rust_lab/functions/src/functions.rs /Users/olumideogundele/Projects/rust/rust_lab/functions/src/main.rs
