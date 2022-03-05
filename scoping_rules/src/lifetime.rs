@@ -269,6 +269,44 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
     &NUM
 }
 
+// Trait bound
+// As a trait bound, it means the type does not contain any non-static references,
+// this means it contains `static` references, it'll exist through the lifetime
+// of the running program.
+// Eg. the receiver can hold on to the type for as long as they want and it will
+// never become invalid until they drop it.
+//
+// It's important to understand that any owned data always passes a 'static lifetime
+// bound, but a reference to that owned data generally does not.
+fn print_it(input: impl Debug + 'static) {
+    println!( "'static value passed in is: {:?}", input );
+}
+
+// Elision
+// It exists because their some shortcuts that can be implemented
+// when writing lifetimes because they are so common and the
+// compiler looks out for such pattern and applies the Elision
+// or allow us write our code in a more readable way.
+// IDEs helps apply elision to such codes too.
+
+
+// `elided_input` and `annotated_input` essentially have identical signatures
+// because the lifetime of `elided_input` is inferred by the compiler:
+fn elided_input(x: &i32) {
+    println!("`elided_input`: {}", x);
+}
+
+fn annotated_input<'a>(x: &'a i32) {
+    println!("`annotated_input`: {}", x);
+}
+
+// Similarly, `elided_pass` and `annotated_pass` have identical signatures
+// because the lifetime is added implicitly to `elided_pass`:
+fn elided_pass(x: &i32) -> &i32 { x }
+
+fn annotated_pass<'a>(x: &'a i32) -> &'a i32 { x }
+
+
 pub fn show_static_lifetime_reference() {
     {
         // Make a `string` literal and print it:
@@ -290,4 +328,24 @@ pub fn show_static_lifetime_reference() {
 
     // since static lifetime stays till running program, NUM is still accessible
     println!("NUM: {} stays accessible", NUM);
+
+    // Trait Bound
+
+    // i is owned and contains no references, thus it's 'static lifetime:
+    let i = 5;
+    print_it(i);
+
+    // i_ref is a reference, it's lifetime is determined by the scope
+    // of the `show_static_lifetime_reference` function, so it is
+    // not static.
+    // let i_ref = &i;
+    // print_it(i_ref);
+
+    let x = 3;
+
+    elided_input(&x);
+    annotated_input(&x);
+
+    println!("`elided_pass`: {}", elided_pass(&x));
+    println!("`annotated_pass`: {}", annotated_pass(&x));
 }
